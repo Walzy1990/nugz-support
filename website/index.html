@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Nugz Support Tool - clear Windows diagnostics, hardware visibility, and controlled maintenance.">
+  <meta name="theme-color" content="#101214">
+  <meta property="og:title" content="Nugz Support Tool">
+  <meta property="og:description" content="Clear Windows diagnostics, hardware visibility, and controlled maintenance.">
+  <meta property="og:type" content="website">
+  <title>Nugz Support Tool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Nugz Support Tool home">
+      <span class="brand-mark">N</span>
+      <span>NUGZ<span class="brand-muted"> / SUPPORT TOOL</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#capabilities">Capabilities</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#download">Download</a>
+    </nav>
+    <div class="header-tools">
+      <label class="language-picker"><span class="sr-only">Language</span><select id="language" aria-label="Language"><option value="en">EN</option><option value="es">ES</option><option value="de">DE</option><option value="fr">FR</option><option value="ja">JA</option></select></label>
+      <a class="header-action" href="#download" data-i18n="getTool">Get the tool <span>↗</span></a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero section-wrap">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="pulse"></span> Windows support, made visible</p>
+        <h1 data-i18n="heroTitle">Know what your machine is doing.</h1>
+        <p class="hero-text" data-i18n="heroText">Nugz brings hardware inventory, platform checks, security visibility, and controlled maintenance into one focused workspace.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#download" data-i18n="downloadNugz">Download Nugz <span>↓</span></a>
+          <a class="button button-quiet" href="#capabilities" data-i18n="explore">Explore capabilities <span>→</span></a>
+        </div>
+        <div class="hero-note"><span class="check">✓</span> Local-first diagnostics &nbsp;·&nbsp; Explicit actions &nbsp;·&nbsp; Windows native</div>
+      </div>
+      <div class="hero-visual" aria-label="Nugz dashboard preview">
+        <div class="window-bar"><span class="window-title">NUGZ <small>SUPPORT TOOL</small></span><span class="window-status">● RUNNING AS ADMINISTRATOR</span></div>
+        <div class="dashboard-grid">
+          <div class="dash-card dash-wide"><div class="dash-heading"><span class="dash-icon">▣</span> SYSTEM INFORMATION</div><div class="metric-grid"><div><small>OS VERSION</small><strong>Windows 11 Pro</strong></div><div><small>ARCHITECTURE</small><strong>x64</strong></div><div><small>PROCESSOR</small><strong>AMD Ryzen 7</strong></div><div><small>MEMORY</small><strong>63.9 GB</strong></div></div></div>
+          <div class="dash-card dash-action"><div class="dash-heading"><span class="dash-icon">ϟ</span> QUICK ACTIONS</div><button>CHECK ONLINE CONNECTION</button></div>
+          <div class="dash-card"><div class="dash-heading"><span class="dash-icon">◈</span> SECURITY STATUS</div><p>Defender <b>Ready to inspect</b></p><p>Firewall <b>Ready to inspect</b></p></div>
+          <div class="dash-card dash-side"><div class="dash-heading"><span class="dash-icon">◌</span> ONLINE STATUS</div><p class="online"><span></span> HTTPS connectivity available</p></div>
+        </div>
+        <div class="scan-line"><span>SCAN COMPLETE</span><i></i><span>LOCAL REPORT READY</span></div>
+      </div>
+    </section>
+
+    <section class="capabilities section-wrap" id="capabilities">
+      <div class="section-intro"><p class="eyebrow" data-i18n="whatItSees">What it sees</p><h2 data-i18n="capabilityTitle">One clear view of your Windows environment.</h2></div>
+      <div class="feature-list">
+        <article class="feature"><span class="feature-number">01</span><div><h3>System intelligence</h3><p>CPU, GPU, memory, storage, Windows version, network adapters, BIOS mode, TPM, and virtualization signals in one report.</p></div><span class="feature-arrow">↗</span></article>
+        <article class="feature"><span class="feature-number">02</span><div><h3>Security visibility</h3><p>Inspect Defender, firewall, UAC, memory integrity, secure boot, driver blocklists, and known anti-cheat processes.</p></div><span class="feature-arrow">↗</span></article>
+        <article class="feature"><span class="feature-number">03</span><div><h3>Controlled actions</h3><p>Keep system changes deliberate with administrator awareness, clear prompts, and a workflow that separates checking from fixing.</p></div><span class="feature-arrow">↗</span></article>
+      </div>
+    </section>
+
+    <section class="workflow section-wrap" id="workflow">
+      <div class="workflow-panel"><p class="eyebrow" data-i18n="calmerWorkflow">A calmer workflow</p><h2 data-i18n="workflowTitle">Inspect first. Act second.</h2><p data-i18n="workflowText">Nugz is built around a simple rhythm: understand the machine, save the evidence, then decide what needs attention. Online checks are explicit and limited to the action you request.</p><a class="text-link" href="#download" data-i18n="localScan">Start with a local scan <span>→</span></a></div>
+      <div class="workflow-steps"><div><span>01</span><strong>Scan</strong><small>Gather a readable system snapshot.</small></div><div><span>02</span><strong>Review</strong><small>See status and signals in context.</small></div><div><span>03</span><strong>Export</strong><small>Keep a local report for support.</small></div></div>
+    </section>
+
+    <section class="download section-wrap" id="download">
+      <div><p class="eyebrow" data-i18n="ready">Ready when you are</p><h2 data-i18n="downloadTitle">Put your system on the record.</h2><p data-i18n="downloadText">Download the current Windows build from this workspace. The support tool requires administrator access; the key generator is a separate utility.</p></div>
+      <div class="download-actions"><a class="button button-primary" href="downloads/Support.exe" download>Download Support.exe <span>↓</span></a><a class="button button-outline" href="downloads/KeyGen.exe" download>Download KeyGen.exe <span>↓</span></a><small>Release · x64 · Windows</small></div>
+    </section>
+  </main>
+
+  <footer class="site-footer section-wrap"><span>© 2026 Nugz Support Tool</span><span>Built for clearer Windows support.</span></footer>
+</body>
+<script src="site.js"></script>
+</html>

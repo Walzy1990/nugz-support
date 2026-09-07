@@ -1,0 +1,24 @@
+# Visual Studio build output
+.vs/
+**/Debug/
+**/Release/
+**/x64/
+**/Win32/
+*.user
+*.suo
+*.pdb
+*.ipch
+*.iobj
+*.ipdb
+*.tlog/
+*.obj
+*.lib
+*.exp
+*.recipe
+
+# Generated access keys
+support.key
+
+# Archives
+*.7z
+*.zip
