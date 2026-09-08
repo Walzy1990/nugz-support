@@ -13,7 +13,10 @@ const translations = {
     localScan: 'Start with a local scan <span>→</span>',
     ready: 'Ready when you are',
     downloadTitle: 'Put your system on the record.',
-    downloadText: 'Download the current Windows build from this workspace. The support tool requires administrator access; the key generator is a separate utility.'
+    downloadText: 'Download the current Windows build from this workspace. The support tool requires administrator access; the key generator is a separate utility.',
+    downloadInstaller: 'Download installer <span>↓</span>',
+    downloadPortable: 'Portable Support.exe <span>↓</span>',
+    downloadKeyGen: 'Portable KeyGen.exe <span>↓</span>'
   },
   es: {
     getTool: 'Obtener la herramienta <span>↗</span>', heroTitle: 'Sabe lo que hace tu equipo.', heroText: 'Nugz reúne inventario de hardware, comprobaciones del sistema, visibilidad de seguridad y mantenimiento controlado.', downloadNugz: 'Descargar Nugz <span>↓</span>', explore: 'Explorar funciones <span>→</span>', whatItSees: 'Lo que detecta', capabilityTitle: 'Una vista clara de tu entorno Windows.', calmerWorkflow: 'Un flujo más sencillo', workflowTitle: 'Inspecciona primero. Actúa después.', workflowText: 'Nugz te ayuda a entender el equipo, guardar la información y decidir qué necesita atención. Las comprobaciones online son explícitas y limitadas a la acción solicitada.', localScan: 'Iniciar un análisis local <span>→</span>', ready: 'Cuando estés listo', downloadTitle: 'Deja constancia de tu sistema.', downloadText: 'Descarga la versión actual para Windows. La herramienta requiere permisos de administrador; el generador de claves es independiente.'

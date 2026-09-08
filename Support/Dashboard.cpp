@@ -1,4 +1,5 @@
 #include <Windows.h>
+#include <tlhelp32.h>
 #include <winhttp.h>
 #pragma comment(lib, "winhttp.lib")
 #include <array>
@@ -153,6 +154,112 @@ std::wstring GetSystemInfoText()
     return output.str();
 }
 
+bool IsAdministrator()
+{
+    BOOL isMember = FALSE;
+    SID_IDENTIFIER_AUTHORITY authority = SECURITY_NT_AUTHORITY;
+    PSID administrators = nullptr;
+    if (AllocateAndInitializeSid(&authority, 2, SECURITY_BUILTIN_DOMAIN_RID,
+        DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0, 0, &administrators))
+    {
+        CheckTokenMembership(nullptr, administrators, &isMember);
+        FreeSid(administrators);
+    }
+    return isMember == TRUE;
+}
+
+std::wstring GetServiceStatus(const wchar_t* serviceName)
+{
+    SC_HANDLE manager = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_CONNECT);
+    if (manager == nullptr)
+    {
+        return L"Unavailable";
+    }
+
+    SC_HANDLE service = OpenServiceW(manager, serviceName, SERVICE_QUERY_STATUS);
+    if (service == nullptr)
+    {
+        CloseServiceHandle(manager);
+        return L"Not installed";
+    }
+
+    SERVICE_STATUS_PROCESS status{};
+    DWORD bytes = 0;
+    bool running = QueryServiceStatusEx(service, SC_STATUS_PROCESS_INFO,
+        reinterpret_cast<LPBYTE>(&status), sizeof(status), &bytes) != FALSE &&
+        status.dwCurrentState == SERVICE_RUNNING;
+    CloseServiceHandle(service);
+    CloseServiceHandle(manager);
+    return running ? L"Running" : L"Stopped";
+}
+
+bool IsProcessRunning(const wchar_t* processName)
+{
+    HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if (snapshot == INVALID_HANDLE_VALUE)
+    {
+        return false;
+    }
+
+    PROCESSENTRY32W entry{ sizeof(entry) };
+    bool found = false;
+    if (Process32FirstW(snapshot, &entry))
+    {
+        do
+        {
+            if (_wcsicmp(entry.szExeFile, processName) == 0)
+            {
+                found = true;
+                break;
+            }
+        } while (Process32NextW(snapshot, &entry));
+    }
+    CloseHandle(snapshot);
+    return found;
+}
+
+std::wstring GetUacStatus()
+{
+    HKEY key = nullptr;
+    DWORD enabled = 0;
+    DWORD size = sizeof(enabled);
+    if (RegOpenKeyExW(HKEY_LOCAL_MACHINE,
+        L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+        0, KEY_READ, &key) == ERROR_SUCCESS)
+    {
+        RegQueryValueExW(key, L"EnableLUA", nullptr, nullptr,
+            reinterpret_cast<LPBYTE>(&enabled), &size);
+        RegCloseKey(key);
+    }
+    return enabled != 0 ? L"Enabled" : L"Disabled or unavailable";
+}
+
+std::wstring GetSecurityStatusText()
+{
+    std::wstringstream output;
+    output << L"Windows Defender     " << GetServiceStatus(L"WinDefend") << L"\r\n"
+        << L"Windows Firewall     " << GetServiceStatus(L"MpsSvc") << L"\r\n"
+        << L"User Account Control " << GetUacStatus();
+    return output.str();
+}
+
+std::wstring GetAntiCheatStatusText()
+{
+    constexpr std::array<const wchar_t*, 6> knownProcesses = {
+        L"vgc.exe", L"vgtray.exe", L"EasyAntiCheat.exe", L"BEService.exe", L"vgk.sys", L"FaceItClient.exe"
+    };
+    for (const wchar_t* process : knownProcesses)
+    {
+        if (IsProcessRunning(process))
+        {
+            std::wstring result = L"Detected running process: ";
+            result += process;
+            return result;
+        }
+    }
+    return L"No known anti-cheat process is currently running.";
+}
+
 std::wstring RunOnlineDiagnostics()
 {
     HINTERNET session = WinHttpOpen(L"NugzSupportTool/1.0", WINHTTP_ACCESS_TYPE_AUTOMATIC_PROXY,
@@ -270,12 +377,8 @@ void PaintDashboard(HWND window, HDC dc)
 void RefreshDashboard()
 {
     SetWindowTextW(g_systemInfo, GetSystemInfoText().c_str());
-    SetWindowTextW(g_securityStatus,
-        L"Windows Defender     CHECK WITH DETAILED SCAN\r\n"
-        L"Windows Firewall     CHECK WITH DETAILED SCAN\r\n"
-        L"Secure Boot          CHECK WITH DETAILED SCAN");
-    SetWindowTextW(g_antiCheatStatus,
-        L"Known anti-cheat process detection is available from the detailed system scan.");
+    SetWindowTextW(g_securityStatus, GetSecurityStatusText().c_str());
+    SetWindowTextW(g_antiCheatStatus, GetAntiCheatStatusText().c_str());
     SetWindowTextW(g_scanStatus, L"SCAN COMPLETE");
 }
 
@@ -297,7 +400,7 @@ LRESULT CALLBACK DashboardProc(HWND window, UINT message, WPARAM wParam, LPARAM 
 
         AddLabel(window, L"NUGZ", 20, 16, 180, 28, g_titleFont);
         AddLabel(window, L"SUPPORT TOOL", 22, 43, 180, 20, g_bodyFont);
-        AddLabel(window, L"RUNNING AS ADMINISTRATOR", 858, 19, 180, 24, g_bodyFont);
+        AddLabel(window, IsAdministrator() ? L"RUNNING AS ADMINISTRATOR" : L"STANDARD USER TOKEN", 858, 19, 180, 24, g_bodyFont);
         AddButton(window, L"START SCAN", kStartScan, 1048, 14, 112, 34);
         AddButton(window, L"HARDWARE", kHardware, 1168, 14, 100, 34);
         AddButton(window, L"SETTINGS", kSettings, 1276, 14, 56, 34);
